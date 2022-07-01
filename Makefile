@@ -13,18 +13,19 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD -lreadline
+CFLAGS		= -Wall -Werror -Wextra -MMD
+LIBS		= -lreadline
 
 all: $(NAME)
 
 bonus: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(CFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS)
 
 $(BUILD_DIR)%.o: $(SRCS_DIR)%.c $(BUILD_DIR)%.d
 	@mkdir -p $(@D)
-	$(CC) -o $@ -c $< $(CFLAGS) -I $(HEAD_DIR)
+	$(CC) $(CFLAGS) -I $(HEAD_DIR) -o $@ -c $<
 
 $(BUILD_DIR)%.d: ;
 
