@@ -57,12 +57,12 @@ int	main(void)
 	prompt = get_prompt();
 	while (1)
 	{
-		//rl_replace_line("", 0);
-		//rl_redisplay();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
 		line = readline(prompt);
 		if (line && strlen(line))
 			add_history(line);
-		if (!(line && line[0] != 'q'))
+		if (!(line))
 			break ;
 	}
 	return (0);
