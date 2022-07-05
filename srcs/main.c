@@ -158,6 +158,31 @@ void	test2()
 	test2_wc(pipefd_2[0], 1, argv_wc);
 }
 
+/*
+	./push_swap 8 5 4 7 | wc -l > ans.txt
+*/
+
+void	test3(int in, int out, char **argv)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		dup_check(in, STDIN_FILENO);
+		dup_check(out, STDOUT_FILENO);
+		close_check(in);
+		close_check(out);
+		execve("/usr/bin/echo", argv, NULL);
+	}
+	else
+	{
+		close_check(in);
+		close_check(out);
+		waitpid(pid, NULL, 0);
+	}
+}
+
 char	*get_prompt(void)
 {
 	char	*prompt;
@@ -210,8 +235,8 @@ int	main(void)
 	char	*line;
 	char	*prompt;
 
-	test2();
-	return (0);
+	//test2();
+	//return (0);
 	prompt = get_prompt();
 	while (1)
 	{
