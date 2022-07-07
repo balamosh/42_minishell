@@ -4,7 +4,13 @@ SRCS_DIR	= srcs/
 HEAD_DIR	= includes/
 BUILD_DIR	= build/
 
-SRCS_FILES	= main.c
+SRCS_FILES	= main.c							\
+			  btree/btree_apply_prefix.c		\
+			  btree/btree_create_node.c			\
+			  ast_exec.c						\
+			  ast.c								\
+			  prompt.c							\
+			  tests.c
 
 OBJS_FILES	= $(SRCS_FILES:.c=.o)
 
