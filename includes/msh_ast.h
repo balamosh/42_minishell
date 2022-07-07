@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:35:27 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 16:48:47 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/07/07 22:27:17 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,14 @@ typedef struct s_ast_pipe
 
 typedef struct s_ast_cmd
 {
-	char	*name;
+	char	*path;
+	char	**argv;
 }				t_ast_cmd;
 
 void		ast_exec(t_btree *root);
 void		ast_exec_node(t_btree *node);
+void	dup_check(int fd, int oldfd);
+void	close_check(int fd);
 t_ast_node	*ast_create_node(t_ast_type type, void *data);
 
 #endif

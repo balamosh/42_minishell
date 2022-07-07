@@ -10,6 +10,7 @@ SRCS_FILES	= main.c							\
 			  ast_exec.c						\
 			  ast.c								\
 			  prompt.c							\
+			  test_ast.c						\
 			  tests.c
 
 OBJS_FILES	= $(SRCS_FILES:.c=.o)
