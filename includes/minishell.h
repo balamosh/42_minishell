@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 22:35:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:35:10 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/07 16:17:22 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main(void)
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+#include <string.h>
+
+# include "msh_ast.h"
+
+typedef struct s_msh
 {
-	char	*line;
-	char	*prompt;
+	t_btree	*ast;
+}				t_msh;
 
-	prompt = get_prompt();
-	while (1)
-	{
-		line = readline(prompt);
-		if (line && strlen(line))
-			add_history(line);
-		if (!line)
-			break ;
-	}
-	return (0);
-}
+char		*get_prompt(void);
+
+#endif

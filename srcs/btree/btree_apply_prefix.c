@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   btree_apply_prefix.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 22:35:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:35:10 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/07 01:13:34 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/07 01:13:35 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "btree.h"
 
-int	main(void)
+void	btree_apply_prefix(t_btree *root, void (*applyf)(void *))
 {
-	char	*line;
-	char	*prompt;
-
-	prompt = get_prompt();
-	while (1)
-	{
-		line = readline(prompt);
-		if (line && strlen(line))
-			add_history(line);
-		if (!line)
-			break ;
-	}
-	return (0);
+	if (!root)
+		return ;
+	(*applyf)(root -> item);
+	btree_apply_prefix(root -> left, applyf);
+	btree_apply_prefix(root -> right, applyf);
 }

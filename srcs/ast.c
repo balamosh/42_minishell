@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 22:35:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:35:10 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/07 16:18:52 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+t_ast_node	*ast_create_node(t_ast_type type, void *data)
 {
-	char	*line;
-	char	*prompt;
+	t_ast_node	*node;
 
-	prompt = get_prompt();
-	while (1)
-	{
-		line = readline(prompt);
-		if (line && strlen(line))
-			add_history(line);
-		if (!line)
-			break ;
-	}
-	return (0);
+	if (!data)
+		return (NULL);
+	node = (t_ast_node *) malloc(sizeof(t_ast_node));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->fd_in = STDIN_FILENO;
+	node->fd_out = STDOUT_FILENO;
+	node->data = data;
+	return (node);
 }

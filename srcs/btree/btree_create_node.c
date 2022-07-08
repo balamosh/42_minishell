@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   btree_create_node.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 22:35:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:35:10 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/07 01:08:59 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/07 01:10:54 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "btree.h"
 
-int	main(void)
+t_btree	*btree_create_node(void *item)
 {
-	char	*line;
-	char	*prompt;
+	t_btree	*node;
 
-	prompt = get_prompt();
-	while (1)
-	{
-		line = readline(prompt);
-		if (line && strlen(line))
-			add_history(line);
-		if (!line)
-			break ;
-	}
-	return (0);
+	node = (t_btree *) malloc(sizeof(t_btree));
+	if (!node)
+		return (NULL);
+	node -> left = NULL;
+	node -> right = NULL;
+	node -> item = item;
+	return (node);
 }
