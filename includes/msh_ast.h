@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:35:27 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:27:17 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/07/08 22:41:11 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef enum s_ast_type
 	MSH_REDIRECT_RR,
 	MSH_REDIRECT_L,
 	MSH_REDIRECT_LL,
-	MSH_FILE,
 	MSH_AST_TYPE_END
 }				t_ast_type;
 
@@ -48,10 +47,15 @@ typedef struct s_ast_cmd
 	char	**argv;
 }				t_ast_cmd;
 
+typedef struct s_ast_redir
+{
+	char	*word;
+}				t_ast_redir;
+
 void		ast_exec(t_btree *root);
 void		ast_exec_node(t_btree *node);
-void	dup_check(int fd, int oldfd);
-void	close_check(int fd);
+void		dup_check(int fd, int oldfd);
+void		close_check(int fd);
 t_ast_node	*ast_create_node(t_ast_type type, void *data);
 
 #endif

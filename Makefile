@@ -7,6 +7,10 @@ BUILD_DIR	= build/
 SRCS_FILES	= main.c							\
 			  btree/btree_apply_prefix.c		\
 			  btree/btree_create_node.c			\
+			  libft/strcmp.c					\
+			  libft/strcpy.c					\
+			  libft/strlen.c					\
+			  libft/strncmp.c					\
 			  ast_exec.c						\
 			  ast.c								\
 			  prompt.c							\

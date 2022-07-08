@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   strncmp.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/09 02:19:33 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/09 02:16:55 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/09 02:16:56 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/wait.h>
-
-# include "libft.h"
-# include "msh_ast.h"
-
-typedef struct s_msh
+int	ft_strncmp(const char *s1, const char *s2, size_t size)
 {
-	t_btree	*ast;
-}				t_msh;
+	size_t	i;
+	int		res;
 
-char		*get_prompt(void);
-
-#endif
+	i = 0;
+	res = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && i < size)
+	{
+		if (s1[i] != s2[i])
+			break ;
+		i += 1;
+	}
+	if (i < size)
+		res = (unsigned char) s1[i] - (unsigned char) s2[i];
+	return (res);
+}

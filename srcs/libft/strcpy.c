@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   strcpy.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/09 02:19:33 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/09 02:12:32 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/09 02:13:00 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/wait.h>
-
-# include "libft.h"
-# include "msh_ast.h"
-
-typedef struct s_msh
+char	*ft_strcpy(char *dest, const char *src)
 {
-	t_btree	*ast;
-}				t_msh;
+	int	i;
 
-char		*get_prompt(void);
-
-#endif
+	i = 0;
+	while (TRUE)
+	{
+		dest[i] = src[i];
+		if (src[i] == '\0')
+			break ;
+		i += 1;
+	}
+	return (dest);
+}

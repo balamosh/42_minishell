@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/09 02:19:33 by sotherys         ###   ########.fr       */
+/*   Created: 2022/07/09 02:08:45 by sotherys          #+#    #+#             */
+/*   Updated: 2022/07/09 02:18:27 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef LIBFT_H
+# define LIBFT_H
 
-# include <stdio.h>
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
 # include <unistd.h>
-# include <sys/wait.h>
+# include <stdlib.h>
 
-# include "libft.h"
-# include "msh_ast.h"
-
-typedef struct s_msh
+typedef enum s_bool
 {
-	t_btree	*ast;
-}				t_msh;
+	FALSE,
+	TRUE
+}			t_bool;
 
-char		*get_prompt(void);
+size_t	ft_strlen(const char *s);
+char	*ft_strcpy(char *dest, const char *src);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t size);
 
 #endif
