@@ -7,6 +7,11 @@ BUILD_DIR	= build/
 SRCS_FILES	= main.c							\
 			  btree/btree_apply_prefix.c		\
 			  btree/btree_create_node.c			\
+			  libft/ft_strlen.c 				\
+			  libft/ft_strcmp.c					\
+			  lexer.c							\
+			  envs.c							\
+			  env_lst_utils.c					\
 			  ast_exec.c						\
 			  ast.c								\
 			  prompt.c							\
@@ -20,7 +25,7 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD
+# CFLAGS		= -Wall -Werror -Wextra -MMD
 LIBS		= -lreadline
 
 all: $(NAME)
