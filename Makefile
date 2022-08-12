@@ -9,6 +9,7 @@ SRCS_FILES	= main.c							\
 			  btree/btree_create_node.c			\
 			  libft/ft_strlen.c 				\
 			  libft/ft_strcmp.c					\
+			  libft/ft_strdup.c					\
 			  lexer.c							\
 			  envs.c							\
 			  env_lst_utils.c					\

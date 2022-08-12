@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/04 19:27:30 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/07 18:41:59 by heboni           ###   ########.fr       */
+/*   Created: 2021/10/24 18:46:03 by heboni            #+#    #+#             */
+/*   Updated: 2022/08/10 09:35:29 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_strdup(const char *s1)
 {
-	size_t	len;
+	char	*dup;
+	int		len;
+	int		i;
 
-	len = 0;
-	while (*s)
-	{
-		len++;
-		s++;
-	}
-	return (len);
+	i = -1;
+	len = ft_strlen(s1);
+	dup = (char *)malloc(sizeof(char) * len + 1);
+	if (dup == ((void *)0))
+		return (((void *)0));
+	while (++i < len)
+		dup[i] = s1[i];
+	dup[len] = '\0';
+	return (dup);
 }

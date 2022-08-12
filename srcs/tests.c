@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tests.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:54:57 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:26:42 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/08/01 23:00:45 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
 	./push_swap 8 5 4 7 | ./checher 8 5 4 7

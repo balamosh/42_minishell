@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   btree_create_node.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:08:59 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 01:10:54 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/08/01 23:04:45 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "btree.h"
+#include "../../includes/btree.h"
 
 t_btree	*btree_create_node(void *item)
 {

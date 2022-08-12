@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/05 15:35:10 by heboni           ###   ########.fr       */
+/*   Updated: 2022/08/12 08:07:08 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "env.h"
 
 # define STACK_OVERFLOW -1
+# define INPUT_ERROR	-2
 
 int	cur_env_vars_len;
 
@@ -46,15 +47,20 @@ char		*get_prompt(void);
 
 //lexer + parser
 char	**lexer(char *line, t_env **envs);
-int		get_tokens(char *line, t_env **envs);
+char	**get_tokens(char *line, t_env **envs);
 char	**tokens_realloc(char **tokens, int tokens_count);
 int		single_quote_lexer(char *line, int i, t_env **envs);
 int		double_quotes_lexer(char *line, int i, t_env **envs);
 int		regular_char_lexer(char *line, int i, t_env **envs);
-void	single_quote_token_saver(char *allocated_token, char *line, int i, t_env **envs);
-void	double_quotes_token_saver(char *allocated_token, char *line, int i, t_env **envs);
-int		get_env_var_value(char *line, int i, int quotes_handler, t_env **envs);
-void	get_env_name_from_line(char **var_name, char *line, int tmp_i, int quotes_handler);
+int		special_chars_lexer(char *line, int i);
+void	single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
+void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
+void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
+int		get_env_var_value_to_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
+int		get_env_var_value(char *line, int i, t_env **envs);
+void	get_env_name_from_line(char **var_name, char *line, int tmp_i);
+// int		get_env_var_value(char *line, int i, int quotes_handler, t_env **envs);
+// void	get_env_name_from_line(char **var_name, char *line, int tmp_i, int quotes_handler);
 void	print_tokens_array(char **tokens, int tokens_count);
 
 #endif

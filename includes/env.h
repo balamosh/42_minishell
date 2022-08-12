@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:35:30 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/05 15:29:08 by heboni           ###   ########.fr       */
+/*   Updated: 2022/08/10 22:53:13 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_env
 t_env	**get_envs(char **env);
 void	envs_saver(char **env, t_env **envs_lst);
 char	*get_env_value_to_save(char *env, int i, int k);
+// void	get_env_value_to_save(char *env, int i, int k);
 
 //env_utils.c
 char	*get_env_value_by_name(void *name, t_env **envs);

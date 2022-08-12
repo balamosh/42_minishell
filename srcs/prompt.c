@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:53:53 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 01:54:23 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/08/01 23:00:28 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 # define SH_FG_RED "\033[31m"
 # define SH_FG_GREEN "\033[32m"
