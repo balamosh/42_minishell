@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:26:06 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/14 11:40:53 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/04 22:45:45 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ char	**lexer(char *line, t_env **envs) //из lexer'a лучше получат�
 	char	**tokens;
 	int		*special_indexes;
 	int		special_indexes_n;
+	int		tokens_count;
 
 	// printf("[lexer] line: %s\n", line);
 	
 	special_indexes = NULL;
-	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n); 
+	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n);
 	printf("[lexer] ");
 	print_tokens_array(tokens, 0);
 	print_int_array(special_indexes, special_indexes_n);
@@ -30,11 +31,179 @@ char	**lexer(char *line, t_env **envs) //из lexer'a лучше получат�
 	return (tokens); //TO DO t_lst_elems
 }
 
+t_ast_node *parser(char *line, t_env **envs)
+{
+	t_ast_node *ast_nodes;
+	char	**tokens;
+	int		*special_indexes;
+	int		special_indexes_n;
+	// int		tokens_count;
+	
+	special_indexes = NULL;
+	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n);
+	// tokens_count = get_tokens_count(tokens); //зачем нужен tokens_count?
+	printf("[parser] ");
+	// printf("tokens_count: %d\n", tokens_count);
+	print_tokens_array(tokens, 0);
+	print_int_array(special_indexes, special_indexes_n);
+	if (special_indexes)
+		free(special_indexes);
+	// ast_nodes = NULL;
+	ast_nodes = tokens_to_ast_nodes(tokens, special_indexes, special_indexes_n);
+	if (ast_nodes == NULL)
+		printf("[parser NO_NODES_LIST]\n");
+	// print_nodes_list(ast_nodes);
+	free_tokens_array(tokens);
+	return (ast_nodes);
+}
+
+void	print_nodes_list(t_ast_node *ast_nodes)
+{	
+	t_ast_cmd *cmd;
+	
+	if (ast_nodes == NULL)
+	{
+		printf("[print_nodes_list NO_LIST]\n");
+		return ;
+	}
+	printf("[print_nodes_list]\n");
+	while (ast_nodes)
+	{
+		printf("type: %u ", ast_nodes->type);
+		if (ast_nodes->type == MSH_PIPE)
+			printf("PIPE\n");
+		if (ast_nodes->type == MSH_CMD)
+		{
+			cmd = ast_nodes->data;
+			printf("CMD: %s\n", cmd->cmd_name);
+		}
+		ast_nodes = ast_nodes->next;
+	}
+	printf("[print_nodes_list END]\n");
+}
+
+t_ast_node *tokens_to_ast_nodes(char **tokens, int *special_indexes, int special_indexes_n)
+{
+	int	i;
+	t_ast_node *ast_nodes;
+	char **tokens_pntr = tokens;
+
+	i = 0;
+	ast_nodes = NULL;
+	while (*tokens != NULL)
+	{
+		// printf("%s\n", *tokens);
+		if (ft_strcmp(*tokens, "|") == 0)
+			ast_node_lst_push_bottom(&ast_nodes, MSH_PIPE);
+		else if (ft_strcmp(*tokens, ">") == 0)
+			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_R);
+		else if (ft_strcmp(*tokens, ">>") == 0)
+			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_RR);
+		else if (ft_strcmp(*tokens, "<") == 0)
+			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_L);
+		else if (ft_strcmp(*tokens, "<<") == 0)
+			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_LL);
+		// else if ((*tokens)[0] == '.' && (*tokens)[1] == '/')
+		// 	ast_node_lst_push_bottom(&ast_nodes, MSH_FILE);
+		else
+		{
+			printf("no seg %s\n", *tokens);
+			ast_cmd_node_lst_push_bottom(&ast_nodes, tokens_pntr, i, MSH_CMD); //в аргументы нужно сложить все токены до 1-го | <
+
+		}
+		printf("%s\n", *tokens++);
+		i++;
+	}
+	// print_nodes_list(ast_nodes);
+	return (ast_nodes);
+}
+
+void	ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int i, t_ast_type type)
+{
+	t_ast_node	*new;
+	t_ast_node	*last_node;
+	t_ast_cmd	*cmd;
+
+	new = (t_ast_node *)malloc(sizeof(t_ast_node));
+	if (new == NULL)
+		exit(STACK_OVERFLOW);
+	new->type = type;
+	if (type == MSH_CMD)
+	{
+		cmd = (t_ast_cmd *)malloc(sizeof(t_ast_cmd));
+		cmd->cmd_name = ft_strdup(tokens[i]);
+		new->data = cmd;
+	}
+	new->next = NULL;
+	if (!*head)
+	{
+		*head = new;
+		return ;
+	}
+	last_node = get_last_node0(*head);
+	last_node->next = new;
+	return ;
+}
+
+void	ast_node_lst_push_bottom(t_ast_node **head, t_ast_type type)
+{
+	t_ast_node	*new;
+	t_ast_node	*last_node;
+	t_ast_cmd	*cmd;
+
+	new = (t_ast_node *)malloc(sizeof(t_ast_node));
+	if (new == NULL)
+		exit(STACK_OVERFLOW);
+	new->type = type;
+	// if (type == MSH_CMD)
+	// {
+	// 	cmd = (t_ast_cmd *)malloc(sizeof(t_ast_cmd));
+	// 	cmd->cmd_name = ;
+	// 	// new->data = (t_ast_cmd *)malloc(sizeof(t_ast_cmd));
+	// 	new->data = cmd;
+	// }
+	// new->var_name = ft_strdup(name);
+	// new->var_value = ft_strdup(value);
+	new->next = NULL;
+	if (!*head)
+	{
+		*head = new;
+		return ;
+	}
+	last_node = get_last_node0(*head);
+	last_node->next = new;
+}
+
+t_ast_node	*get_last_node0(t_ast_node *head)
+{
+	if (!head)
+		return (NULL);
+	while (head->next)
+		head = head->next;
+	return (head);
+}
+
+int get_tokens_count(char **tokens)
+{
+	int	count;
+
+	count = 0;
+	while (*tokens != NULL)
+	{
+		count++;
+		tokens++;
+	}
+	return (count);
+}
+
+
+
 void	print_int_array(int *array, int n)
 {
 	int	i;
 
 	i = -1;
+	printf(" [print_special_indexes_int_array]\n");
 	while (++i < n)
 		printf("%d ", array[i]);
 	printf(" [print_special_indexes_int_array] END\n");

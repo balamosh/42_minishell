@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:35:27 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/12 08:24:36 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/04 20:34:40 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef enum s_ast_type
 	MSH_REDIRECT_RR,
 	MSH_REDIRECT_L,
 	MSH_REDIRECT_LL,
-	MSH_FILE,
+	MSH_FILE, //?
 	MSH_AST_TYPE_END
 }				t_ast_type;
 
@@ -35,6 +35,7 @@ typedef struct s_ast_node
 	int			fd_in;
 	int			fd_out;
 	void		*data; //t_ast_pipe  //t_ast_cmd
+	struct s_ast_node	*next;
 }				t_ast_node;
 
 typedef struct s_ast_pipe
