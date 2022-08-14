@@ -6,32 +6,38 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:26:06 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/12 08:18:22 by heboni           ###   ########.fr       */
+/*   Updated: 2022/08/14 11:40:53 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**lexer(char *line, t_env **envs)
+char	**lexer(char *line, t_env **envs) //из lexer'a лучше получать t_lst_elems (список токенов-нод)
 {
 	char	**tokens;
-	// int		tokens_count;
+	int		*special_indexes;
+	int		special_indexes_n;
 
 	// printf("[lexer] line: %s\n", line);
-	tokens = get_tokens(line, envs);
+	
+	special_indexes = NULL;
+	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n); 
 	printf("[lexer] ");
 	print_tokens_array(tokens, 0);
-	
-	// printf("[lexer] tokens_count: %d\n", tokens_count);
-	// if (tokens_count == 0)
-	// 	return (NULL);
-	
-	// tokens = (char **)malloc(sizeof(char *) * tokens_count); //выделить память под char **
-	// if (tokens == NULL)
-	// 	exit(STACK_OVERFLOW);
-	// tokens = get_tokens2(line, tokens, tokens_count, envs);
-	
-	return (tokens); //TO DO void
+	print_int_array(special_indexes, special_indexes_n);
+	if (special_indexes)
+		free(special_indexes);
+	return (tokens); //TO DO t_lst_elems
+}
+
+void	print_int_array(int *array, int n)
+{
+	int	i;
+
+	i = -1;
+	while (++i < n)
+		printf("%d ", array[i]);
+	printf(" [print_special_indexes_int_array] END\n");
 }
 
 // char	**get_tokens2(char *line, char **tokens, int tokens_count, t_env **envs)
@@ -66,7 +72,7 @@ char	**lexer(char *line, t_env **envs)
 // 	return (token_len);
 // }
 
-char	**get_tokens(char *line, t_env **envs)
+char	**get_tokens(char *line, t_env **envs, int **special_indexes, int *special_indexes_n)
 {
 	char **tokens;
 	int	tokens_count;
@@ -76,6 +82,7 @@ char	**get_tokens(char *line, t_env **envs)
 
 	i = -1;
 	tokens_count = 0;
+	*special_indexes_n = 0;
 	printf("[get_tokens] line: %s\n", line);
 	len = ft_strlen(line); 
 	printf("[get_tokens]: len = %d\n", len);
@@ -89,19 +96,26 @@ char	**get_tokens(char *line, t_env **envs)
 		{
 			i++;
 		}
-		if (line[i] == '\"') //пока обработаю легкий случай: без внутренних таких же ""
+		if (line[i] == '\"')
 		{
 			tmp_i = i; //"
-			i = double_quotes_lexer(line, i, envs); //тут последний символ токена //только как учитывать длину переменных окружения
-			int token_len = i - tmp_i + cur_env_vars_len; //длина токена ' - ' (token + '\0')
+			i = double_quotes_lexer(line, i, envs);
+			int token_len = i - tmp_i + cur_env_vars_len; //TO DO внести cur_env_vars_len в context
 			printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);
 			tokens_count++;
 			printf("\n[get_tokens] tokens_count: %d\n\n", tokens_count);
 			
+			if (is_exeption_token(line, tmp_i, '\"'))
+			{
+				printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
+				special_indexes = int_array_realloc(special_indexes, special_indexes_n);
+				(*special_indexes)[*special_indexes_n - 1] = tokens_count - 1;
+			}
+			
 			tokens = tokens_realloc(tokens, tokens_count);
 			tokens[tokens_count - 1] = (char *)malloc(sizeof(char) * token_len); //выделить память под текущий токен
 			if (tokens[tokens_count - 1] == NULL)
-				exit(STACK_OVERFLOW);//выделить память под текущий токен
+				exit(STACK_OVERFLOW);
 			double_quotes_token_saver(tokens, tokens_count - 1, line, tmp_i, envs);//заполнить текущий токен
 			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
 			print_tokens_array(tokens, tokens_count);
@@ -114,6 +128,13 @@ char	**get_tokens(char *line, t_env **envs)
 			printf("\ni: %d, tmp_i: %d, token_len: %d", i, tmp_i, token_len);//получить длину токена 
 			tokens_count++;
 			printf("\n[get_tokens] tokens_count: %d\n", tokens_count);
+			
+			if (is_exeption_token(line, tmp_i, '\''))
+			{
+				printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
+				special_indexes = int_array_realloc(special_indexes, special_indexes_n);
+				(*special_indexes)[*special_indexes_n - 1] = tokens_count - 1;
+			}
 			
 			tokens = tokens_realloc(tokens, tokens_count);
 			tokens[tokens_count - 1] = (char *)malloc(sizeof(char) * token_len); //выделить память под текущий(новый) токен
@@ -128,9 +149,18 @@ char	**get_tokens(char *line, t_env **envs)
 		{
 			tmp_i = i;
 			i = special_chars_lexer(line, i);
-			// tokens_count++;
-			//если ls|grep делаем токен [|] 
-			//i--;
+			int token_len = i - tmp_i;
+			tokens_count++;	
+			i--; //если ls|grep делаем токен [|]: special_chars_lexer возвр. i~], token_len=1, возвр. на | 
+			tokens = tokens_realloc(tokens, tokens_count);//можно делать реаллок массива токенов
+			// printf("[get_tokens] %s\n", tokens[0]);
+			tokens[tokens_count - 1] = (char *)malloc(sizeof(char) * token_len); //выделить память под текущий(новый) токен
+			tokens[tokens_count - 1][0] = '\0';
+			if (tokens[tokens_count - 1] == NULL)
+				exit(STACK_OVERFLOW);
+			special_chars_token_saver(tokens, tokens_count - 1, line, tmp_i);
+			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
+			print_tokens_array(tokens, tokens_count);
 		}
 		else if (line[i] != '\0')
 		{
@@ -139,12 +169,6 @@ char	**get_tokens(char *line, t_env **envs)
 			int token_len = i - tmp_i + cur_env_vars_len;
 			printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);//получить длину токена 
 			tokens_count++;
-			//сохранить токен до пайпа и выйти(запомнить i/счетчик_пайпов++), получить t_ast_node, добавить в t_lst_elems
-			if (line[i] == '|') //TO DO убрать после добавления special_chars_lexer
-			{
-				printf("\nPIPE\n");
-				return (tokens);
-			}
 			printf("\n[get_tokens] line[%d]: %c, tokens_count: %d\n", i, line[i], tokens_count);
 
 			tokens = tokens_realloc(tokens, tokens_count);//можно делать реаллок массива токенов
@@ -161,9 +185,23 @@ char	**get_tokens(char *line, t_env **envs)
 	return (tokens);
 }
 
-int	special_chars_lexer(char *line, int i) //из regular_char не надо вызывать special_chars_lexer, он будет всегда вызываться 
-{ //на уровень выше, чтобы было корректное token_count
-	printf("%c\n", line[i]);
+int	is_exeption_token(char *line, int tmp_i, char c)
+{
+	// if (((line[tmp_i + 1] == '|' || line[tmp_i + 1] == '>' || line[tmp_i + 1] == '<')\
+	// 	&& line[tmp_i + 2] == '\"' && (line[tmp_i + 3] == ' ' ||  line[tmp_i + 3] == '\0')) || \
+	// 	(((line[tmp_i + 1] == '>' && line[tmp_i + 2] == '>') || (line[tmp_i + 1] == '<' && line[tmp_i + 2] == '<')) && \
+	// 	line[tmp_i + 3] == '\"' && (line[tmp_i + 4] == ' ' ||  line[tmp_i + 4] == '\0')) )
+	if (((line[tmp_i + 1] == '|' || line[tmp_i + 1] == '>' || line[tmp_i + 1] == '<')\
+		&& line[tmp_i + 2] == c && (line[tmp_i + 3] == ' ' ||  line[tmp_i + 3] == '\0')) || \
+		(((line[tmp_i + 1] == '>' && line[tmp_i + 2] == '>') || (line[tmp_i + 1] == '<' && line[tmp_i + 2] == '<')) && \
+		line[tmp_i + 3] == c && (line[tmp_i + 4] == ' ' ||  line[tmp_i + 4] == '\0')) )
+			return (1); //TO DO добавить другие пробелы
+	return (0);
+}
+
+int	special_chars_lexer(char *line, int i) //из regular_char не надо вызывать special_chars_lexer, special_chars_lexer будет 
+{ // всегда вызываться на уровень выше, чтобы было корректное token_count
+	printf("%c", line[i]);
 	i++;
 	if ((line[i - 1] == '>' && line[i] == '>') || (line[i - 1] == '<' && line[i] == '<'))
 	{
@@ -171,6 +209,59 @@ int	special_chars_lexer(char *line, int i) //из regular_char не надо в�
 		i++;
 	}
 	return (i);
+}
+
+void	special_chars_token_saver(char **tokens, int token_n, char *line, int i)
+{
+	int	k;
+
+	k = -1;
+	printf("\n[special_chars_token_saver]\n");
+	tokens[token_n][++k] = line[i];
+	i++;
+	if ((line[i - 1] == '>' && line[i] == '>') || (line[i - 1] == '<' && line[i] == '<'))
+	{
+		tokens[token_n][++k] = line[i];
+		i++;
+	}
+	tokens[token_n][++k] = '\0';
+	printf("\n[special_chars_token_saver END]\n");
+}
+
+int	**int_array_realloc(int **array, int *array_n)
+{
+	int	*tmp_array;
+	int	i;
+
+	i = -1;
+	tmp_array = NULL;
+	printf("[int_array_realloc] array_n: %d\n", *array_n);
+	if (*array_n != 0)
+	{
+		tmp_array = (int *)malloc(sizeof(int) * *array_n); //выделить память под char **
+		if (tmp_array == NULL)
+			exit(STACK_OVERFLOW);
+		while (++i < *array_n)
+		{
+			tmp_array[i] = (*array)[i];
+			printf("[int_array_realloc] tmp_array[%d]=%d\n", i, tmp_array[i]);
+		}
+		free(*array);
+	}
+	*array_n += 1;
+	*array = (int *)malloc(sizeof(int) * *array_n); //выделить память под char **
+	if (*array == NULL)
+		exit(STACK_OVERFLOW);
+	
+	if (tmp_array != NULL)
+	{
+		//из tmp_array перенести в переаллоцированный array
+		i = -1;
+		while (++i < (*array_n - 1))
+			(*array)[i] = tmp_array[i];
+		free(tmp_array);
+	}
+	return (array);
 }
 
 char	**tokens_realloc(char **tokens, int tokens_count) //почитать как делать realloc двумерных массивов с сохранением информации
@@ -353,15 +444,10 @@ void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_e
 			break ;
 		if (line[i] == '\0')
 			break ;
-		// if (line[i] == '>' || (line[i] == '>' && line[i + 1] == '>') || line[i] == '<' || (line[i] == '<' && line[i + 1] == '<')) //11.08
-		// 	break;
 		tokens[token_n][++k] = line[i];
 		printf("k=%d: %c", k, tokens[token_n][k]);
-		if (line[i] == '|' || line[i + 1] == '|')
-		{
-			printf("\n[regular_char_token_saver PIPE]\n");
-			break ;
-		}
+		if (line[i] == '|' || line[i + 1] == '|' || line[i] == '>' || line[i + 1] == '>' || line[i] == '<' || line[i + 1] == '<')
+			break;
 		i++;
 	}
 	tokens[token_n][++k] = '\0';
@@ -371,7 +457,6 @@ void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_e
 int	regular_char_lexer(char *line, int i, t_env **envs)
 {
 	// printf("in regular\n");
-	// while (line[i] != ' ') //добавить другие пробелы
 	while (1)
 	{
 		if (line[i] == '\'')
@@ -394,15 +479,13 @@ int	regular_char_lexer(char *line, int i, t_env **envs)
 			i++;
 			continue; //04.08 fix $TERM$HOME - должен быть 1 аргумент
 		}
-		if (line[i] == '>' || (line[i] == '>' && line[i + 1] == '>') || line[i] == '<' || (line[i] == '<' && line[i + 1] == '<')) //11.08
-			break;
 		printf("%c", line[i]);
 		if (line[i] == ' ') //добавить другие пробелы
 			break ;
 		if (line[i] == '\0')
 			break ;
-		if (line[i] == '|' || line[i + 1] == '|')
-			break;
+		if (line[i] == '|' || line[i + 1] == '|' || line[i] == '>' || line[i + 1] == '>' || line[i] == '<' || line[i + 1] == '<')
+			break; //после printf для кейсов a| b, a|b
 		i++;
 	}
 	return (i);

@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 22:35:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/12 07:21:55 by heboni           ###   ########.fr       */
+/*   Updated: 2022/08/14 11:54:44 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		exit(INPUT_ERROR);
 	envs = get_envs(env);
-	print_env_list(envs);
+	// print_env_list(envs);
 	prompt = get_prompt();
 	while (1)
 	{
