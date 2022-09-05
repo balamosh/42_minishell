@@ -35,14 +35,21 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 		if (!line)
 			break ;
-		tokens = lexer(line, &envs_lst);
-		printf("[main] ");
-		print_tokens_array(tokens, 0);
+
+		// tokens = lexer(line, &envs_lst);
+		// if (tokens == NULL)
+		// 	continue;
+		// printf("[main] ");
+		// print_tokens_array(tokens, 0);
+		// free_tokens_array(tokens);
+
 		ast_nodes = parser(line, &envs_lst);
+		if (ast_nodes == NULL)
+			continue;
 		print_nodes_list(ast_nodes);
 		free_nodes_lst(&ast_nodes);
 		free(line);
-		free_tokens_array(tokens);
+		
 		// free_env_lst(&envs_lst); free(prompt); return(0); //to test leaks
 
 	}

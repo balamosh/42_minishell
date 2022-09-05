@@ -24,6 +24,11 @@ char	**lexer(char *line, t_env **envs) //из lexer'a лучше получат�
 	special_indexes = NULL;
 	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n);
 	printf("[lexer] ");
+	if (tokens == NULL)
+	{
+		printf("TOKENS == NULL\n");
+		return (NULL);
+	}
 	print_tokens_array(tokens, 0);
 	print_int_array(special_indexes, special_indexes_n);
 	if (special_indexes)
@@ -41,6 +46,11 @@ t_ast_node *parser(char *line, t_env **envs)
 	
 	special_indexes = NULL;
 	tokens = get_tokens(line, envs, &special_indexes, &special_indexes_n);
+	if (tokens == NULL)
+	{
+		printf("TOKENS == NULL\n");
+		return (NULL);
+	}
 	// tokens_count = get_tokens_count(tokens); //зачем нужен tokens_count?
 	printf("[parser] ");
 	// printf("tokens_count: %d\n", tokens_count);
