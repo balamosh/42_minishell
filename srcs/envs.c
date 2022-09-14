@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:28:42 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/03 19:54:10 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/14 21:15:20 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	envs_saver(char **env, t_env **envs_lst)
 {
