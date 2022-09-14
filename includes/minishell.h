@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/04 22:32:16 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/14 09:28:42 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@
 # define STACK_OVERFLOW -1
 # define INPUT_ERROR	-2
 
+struct s_msh	*msh_ctx;
 int	cur_env_vars_len;
 
 typedef struct s_msh
 {
 	t_btree	*ast;
 	t_env	*env;
+	int		not_closed_quote;
+	//TO DO перенести сюда cur_env_vars_len
 }				t_msh;
 
 typedef struct s_lst_elems //нужна ли это структура, можно просто добавить в t_ast_node *next
@@ -46,7 +49,7 @@ typedef struct s_lst_elems //нужна ли это структура, можн
 char	*get_prompt(void);
 
 //main
-void	free_tokens_array(char **tokens);
+void	free_string_array(char **argv);
 
 //lexer + parser
 char	**lexer(char *line, t_env **envs);
@@ -67,22 +70,28 @@ int		get_env_var_value(char *line, int i, t_env **envs);
 void	get_env_name_from_line(char **var_name, char *line, int tmp_i);
 // int		get_env_var_value(char *line, int i, int quotes_handler, t_env **envs);
 // void	get_env_name_from_line(char **var_name, char *line, int tmp_i, int quotes_handler);
+int		is_real_token(int *special_indexes, int special_indexes_n, int token_i);
 int 	get_tokens_count(char **tokens);
-void	print_tokens_array(char **tokens, int tokens_count);
+void	print_string_array(char **argv, int count);
 void	print_int_array(int *array, int n);
 
 // t_ast_node **parser(char *line, t_env **envs);
 t_ast_node *parser(char *line, t_env **envs);
 // t_ast_node **tokens_to_ast_nodes(char **tokens, int tokens_count, int *special_indexes, int special_indexes_n);
-t_ast_node *tokens_to_ast_nodes(char **tokens, int *special_indexes, int special_indexes_n);
+// t_ast_node *tokens_to_ast_nodes0(char **tokens, int *special_indexes, int special_indexes_n);
+t_ast_node *tokens_to_ast_nodes(char **tokens, int tokens_count, int *exeption_indexes, int exeption_indexes_n);
 // void	print_nodes_list(t_ast_node **ast_nodes);
 void	print_nodes_list(t_ast_node *ast_nodes);
-t_ast_node	*get_last_node0(t_ast_node *head);
+t_ast_node	*get_last_ast_node(t_ast_node *head);
 void	ast_node_lst_push_bottom(t_ast_node **head, t_ast_type type);
 // int		ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int i, t_ast_type type);
 // void	ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int *i, t_ast_type type);
-void	ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int i, t_ast_type type);
-
+void	ast_cmd_node_lst_push_bottom0(t_ast_node **head, char **tokens, int i, t_ast_type type);
+void	ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int *i, t_ast_type type);
+char	**get_cmd_node_argv(char **tokens, int *token_i);
 void	free_nodes_lst(t_ast_node **ast_nodes);
+
+int	is_special_token(char **tokens, int token_i);
+int	is_special_symbols(char *token);
 
 #endif
