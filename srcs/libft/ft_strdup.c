@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 18:46:03 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/14 21:15:01 by heboni           ###   ########.fr       */
+/*   Updated: 2022/08/10 09:35:29 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 char	*ft_strdup(const char *s1)
 {

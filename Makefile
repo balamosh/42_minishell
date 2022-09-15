@@ -26,7 +26,6 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
-CFLAGS		= -MMD
 # CFLAGS		= -Wall -Werror -Wextra -MMD
 LIBS		= -lreadline
 

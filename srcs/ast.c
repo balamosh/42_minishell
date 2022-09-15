@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/14 22:42:23 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/14 09:52:42 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_ast_node	*ast_create_node(t_ast_type type, void *data)
 {
@@ -78,8 +78,8 @@ void	ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int *i, t_as
 		new->fd_out = STDOUT_FILENO;
 		
 		cmd->argv = get_cmd_node_argv(tokens, i); //нужен еще exeption_indexes
-		// print_string_array(cmd->argv, 0);
-		// printf("cmd->argv[0] = %s\n", cmd->argv[0]);
+		print_string_array(cmd->argv, 0);
+		printf("cmd->argv[0] = %s\n", cmd->argv[0]);
 		//добавлять в cmd->argv все токены до первого специального токена 
 		//токен является специальным, если он один из (|<><<>>) И token_n нет в exeption_indexes
 	}
@@ -112,8 +112,8 @@ char	**get_cmd_node_argv(char **tokens, int *token_i)
 		argv_count++;
 	}
 	(*token_i)--;
-	// printf("[get_cmd_node_argv] *token_i to return = %d\n", *token_i);
-	// printf("[get_cmd_node_argv] argv_count = %d\n", argv_count);
+	printf("[get_cmd_node_argv] *token_i to return = %d\n", *token_i);
+	printf("[get_cmd_node_argv] argv_count = %d\n", argv_count);
 	
 	argv = (char **)malloc(sizeof(char *) * argv_count);
 	if (!argv)
@@ -124,13 +124,13 @@ char	**get_cmd_node_argv(char **tokens, int *token_i)
 	while (++i < argv_count)
 	{
 		argv[i] = strdup(tokens[++tmp_i]);
-		// printf("[get_cmd_node_argv] argv[%d]=%s\n", i, argv[i]);
+		printf("[get_cmd_node_argv] argv[%d]=%s\n", i, argv[i]);
 	}
-	// printf("[get_cmd_node_argv] NULL_i=%d\n", i);
+	printf("[get_cmd_node_argv] NULL_i=%d\n", i);
 	argv[i] = NULL; //без этого sega, с этим затирается argv[0] ((
-
-	// print_string_array(argv, 0);
-	// printf("[get_cmd_node_argv] END\n");
+	// argv[i+1] = NULL;	
+	print_string_array(argv, 0);
+	printf("[get_cmd_node_argv] END\n");
 	return (argv);
 }
 

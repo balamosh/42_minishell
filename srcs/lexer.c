@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:26:06 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/14 22:47:19 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/14 09:28:21 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 char	**lexer(char *line, t_env **envs) //deprecated: was changed to parser
 {
@@ -18,16 +18,18 @@ char	**lexer(char *line, t_env **envs) //deprecated: was changed to parser
 	int		*exeption_indexes;
 	int		exeption_indexes_n;
 	int		tokens_count;
+
+	// printf("[lexer] line: %s\n", line);
 	
 	exeption_indexes = NULL;
 	tokens = get_tokens(line, envs, &exeption_indexes, &exeption_indexes_n);
-	// printf("[lexer] ");
+	printf("[lexer] ");
 	if (tokens == NULL)
 	{
 		printf("TOKENS == NULL\n");
 		return (NULL);
 	}
-	// print_string_array(tokens, 0);
+	print_string_array(tokens, 0);
 	print_int_array(exeption_indexes, exeption_indexes_n);
 	if (exeption_indexes)
 		free(exeption_indexes);
@@ -50,10 +52,10 @@ t_ast_node *parser(char *line, t_env **envs)
 		return (NULL);
 	}
 	tokens_count = get_tokens_count(tokens);
-	// printf("[parser] ");
+	printf("[parser] ");
 	// printf("tokens_count: %d\n", tokens_count);
-	// print_string_array(tokens, 0);
-	// print_int_array(exeption_indexes, exeption_indexes_n);
+	print_string_array(tokens, 0);
+	print_int_array(exeption_indexes, exeption_indexes_n);
 	// ast_nodes = NULL;
 	ast_nodes = tokens_to_ast_nodes(tokens, tokens_count, exeption_indexes, exeption_indexes_n);
 	if (ast_nodes == NULL)
@@ -88,13 +90,13 @@ t_ast_node *tokens_to_ast_nodes(char **tokens, int tokens_count, int *exeption_i
 			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_LL);
 		else
 		{
-			// printf("no seg %s\n", tokens[token_i]);
+			printf("no seg %s\n", tokens[token_i]);
 			ast_cmd_node_lst_push_bottom(&ast_nodes, tokens, &token_i, MSH_CMD); //в аргументы нужно сложить все токены до 1-го | <
-			// printf("token_i = %d\n", token_i);
+			printf("token_i = %d\n", token_i);
 		}
-		// printf("tokens[%d]: %s\n", token_i, tokens[token_i]);
+		printf("tokens[%d]: %s\n", token_i, tokens[token_i]);
 	}
-	// printf(" [tokens_to_ast_nodes] END\n");
+	printf(" [tokens_to_ast_nodes] END\n");
 	return (ast_nodes);
 }
 
@@ -123,19 +125,19 @@ t_ast_node *tokens_to_ast_nodes0(char **tokens, int *exeption_indexes, int exept
 			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_LL);
 		else
 		{
-			// printf("no seg %s\n", tokens_pntr[token_i]);
+			printf("no seg %s\n", tokens_pntr[token_i]);
 			// ast_cmd_node_lst_push_bottom0(&ast_nodes, tokens_pntr, token_i, MSH_CMD); //в аргументы нужно сложить все токены до 1-го | <
 			ast_cmd_node_lst_push_bottom(&ast_nodes, tokens_pntr, &token_i, MSH_CMD);
-			// printf("token_i = %d\n", token_i);
+			printf("token_i = %d\n", token_i);
 		}
-		// printf("tokens_pntr[%d]: %s\n", token_i, tokens_pntr[token_i]); // printf("%s\n", *tokens++);
+		printf("tokens_pntr[%d]: %s\n", token_i, tokens_pntr[token_i]); // printf("%s\n", *tokens++);
 		token_i++;
 		int i = -1;
 		while (++i < (token_i - tmp_token_i))
 			*tokens++;
-		// printf("*tokens: %s\n", *tokens);
+		printf("*tokens: %s\n", *tokens);
 	}
-	// printf(" [tokens_to_ast_nodes] END\n");
+	printf(" [tokens_to_ast_nodes] END\n");
 	return (ast_nodes);
 }
 
@@ -192,9 +194,9 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 	i = -1;
 	tokens_count = 0;
 	*exeption_indexes_n = 0;
-	// printf("[get_tokens] line: %s\n", line);
+	printf("[get_tokens] line: %s\n", line);
 	len = ft_strlen(line); 
-	// printf("[get_tokens]: len = %d\n", len);
+	printf("[get_tokens]: len = %d\n", len);
 	line[len] = '\0';
 	tokens = NULL;
 	while (++i < len)
@@ -212,13 +214,13 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (msh_ctx->not_closed_quote == 1)
 				return (NULL);
 			int token_len = i - tmp_i + cur_env_vars_len; //TO DO внести cur_env_vars_len в context
-			// printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);
+			printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);
 			tokens_count++;
-			// printf("\n[get_tokens] tokens_count: %d\n\n", tokens_count);
+			printf("\n[get_tokens] tokens_count: %d\n\n", tokens_count);
 			
 			if (is_exeption_token(line, tmp_i, '\"'))
 			{
-				// printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
+				printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
 				exeption_indexes = int_array_realloc(exeption_indexes, exeption_indexes_n);
 				(*exeption_indexes)[*exeption_indexes_n - 1] = tokens_count - 1;
 			}
@@ -228,8 +230,8 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (tokens[tokens_count - 1] == NULL)
 				exit(STACK_OVERFLOW);
 			double_quotes_token_saver(tokens, tokens_count - 1, line, tmp_i, envs);//заполнить текущий токен
-			// printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
-			// print_string_array(tokens, tokens_count);
+			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
+			print_string_array(tokens, tokens_count);
 		}
 		else if (line[i] == '\'') //пока обработаю легкий случай: без внутренних таких же ""
 		{
@@ -238,13 +240,13 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (msh_ctx->not_closed_quote == 1)
 				return (NULL);
 			int token_len = i - tmp_i; 
-			// printf("\ni: %d, tmp_i: %d, token_len: %d", i, tmp_i, token_len);//получить длину токена 
+			printf("\ni: %d, tmp_i: %d, token_len: %d", i, tmp_i, token_len);//получить длину токена 
 			tokens_count++;
-			// printf("\n[get_tokens] tokens_count: %d\n", tokens_count);
+			printf("\n[get_tokens] tokens_count: %d\n", tokens_count);
 			
 			if (is_exeption_token(line, tmp_i, '\''))
 			{
-				// printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
+				printf("\n[get_tokens] ONLY SPECIAL CHAR TOKEN\n");
 				exeption_indexes = int_array_realloc(exeption_indexes, exeption_indexes_n);
 				(*exeption_indexes)[*exeption_indexes_n - 1] = tokens_count - 1;
 			}
@@ -255,8 +257,8 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (tokens[tokens_count - 1] == NULL)
 				exit(STACK_OVERFLOW);
 			single_quote_token_saver(tokens, tokens_count - 1, line, tmp_i, envs);// single_quote_token_saver(tokens[tokens_count - 1], line, tmp_i, envs);//заполнить текущий токен
-			// printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
-			// print_string_array(tokens, tokens_count);
+			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
+			print_string_array(tokens, tokens_count);
 		}
 		else if (line[i] == '|' || line[i] == '>' || line[i] == '<')
 		{
@@ -272,17 +274,17 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (tokens[tokens_count - 1] == NULL)
 				exit(STACK_OVERFLOW);
 			special_chars_token_saver(tokens, tokens_count - 1, line, tmp_i);
-			// printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
-			// print_string_array(tokens, tokens_count);
+			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
+			print_string_array(tokens, tokens_count);
 		}
 		else if (line[i] != '\0')
 		{
 			tmp_i = i;
 			i = regular_char_lexer(line, i, envs);
 			int token_len = i - tmp_i + cur_env_vars_len;
-			// printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);//получить длину токена 
+			printf("\ni: %d, tmp_i: %d, cur_env_vars_len: %d, token_len: %d", i, tmp_i, cur_env_vars_len, token_len);//получить длину токена 
 			tokens_count++;
-			// printf("\n[get_tokens] line[%d]: %c, tokens_count: %d\n", i, line[i], tokens_count);
+			printf("\n[get_tokens] line[%d]: %c, tokens_count: %d\n", i, line[i], tokens_count);
 
 			tokens = tokens_realloc(tokens, tokens_count);//можно делать реаллок массива токенов
 			// printf("[get_tokens] %s\n", tokens[0]);
@@ -291,8 +293,8 @@ char	**get_tokens(char *line, t_env **envs, int **exeption_indexes, int *exeptio
 			if (tokens[tokens_count - 1] == NULL)
 				exit(STACK_OVERFLOW);
 			regular_char_token_saver(tokens, tokens_count - 1, line, tmp_i, envs);// single_quote_token_saver(tokens[tokens_count - 1], line, tmp_i, envs);//заполнить текущий токен
-			// printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
-			// print_string_array(tokens, tokens_count);
+			printf("saved_token: %s\n\n", tokens[tokens_count - 1]);
+			print_string_array(tokens, tokens_count);
 		}
 	}
 	return (tokens);
@@ -314,11 +316,11 @@ int	is_exeption_token(char *line, int tmp_i, char c)
 
 int	special_chars_lexer(char *line, int i) //из regular_char не надо вызывать special_chars_lexer, special_chars_lexer будет 
 { // всегда вызываться на уровень выше, чтобы было корректное token_count
-	// printf("%c", line[i]);
+	printf("%c", line[i]);
 	i++;
 	if ((line[i - 1] == '>' && line[i] == '>') || (line[i - 1] == '<' && line[i] == '<'))
 	{
-		// printf("%c\n", line[i]);
+		printf("%c\n", line[i]);
 		i++;
 	}
 	return (i);
@@ -329,7 +331,7 @@ void	special_chars_token_saver(char **tokens, int token_n, char *line, int i)
 	int	k;
 
 	k = -1;
-	// printf("\n[special_chars_token_saver]\n");
+	printf("\n[special_chars_token_saver]\n");
 	tokens[token_n][++k] = line[i];
 	i++;
 	if ((line[i - 1] == '>' && line[i] == '>') || (line[i - 1] == '<' && line[i] == '<'))
@@ -338,7 +340,7 @@ void	special_chars_token_saver(char **tokens, int token_n, char *line, int i)
 		i++;
 	}
 	tokens[token_n][++k] = '\0';
-	// printf("\n[special_chars_token_saver END]\n");
+	printf("\n[special_chars_token_saver END]\n");
 }
 
 int	**int_array_realloc(int **array, int *array_n)
@@ -348,7 +350,7 @@ int	**int_array_realloc(int **array, int *array_n)
 
 	i = -1;
 	tmp_array = NULL;
-	// printf("[int_array_realloc] array_n: %d\n", *array_n);
+	printf("[int_array_realloc] array_n: %d\n", *array_n);
 	if (*array_n != 0)
 	{
 		tmp_array = (int *)malloc(sizeof(int) * *array_n); //выделить память под char **
@@ -357,7 +359,7 @@ int	**int_array_realloc(int **array, int *array_n)
 		while (++i < *array_n)
 		{
 			tmp_array[i] = (*array)[i];
-			// printf("[int_array_realloc] tmp_array[%d]=%d\n", i, tmp_array[i]);
+			printf("[int_array_realloc] tmp_array[%d]=%d\n", i, tmp_array[i]);
 		}
 		free(*array);
 	}
@@ -385,7 +387,7 @@ char	**tokens_realloc(char **tokens, int tokens_count) //почитать как
 	
 	i = -1;
 	tmp_tokens = NULL;
-	// printf("[tokens_realloc] tokens_count: %d\n", tokens_count);
+	printf("[tokens_realloc] tokens_count: %d\n", tokens_count);
 	if (tokens != NULL)
 	{
 		tmp_tokens = (char **)malloc(sizeof(char *) * tokens_count); //выделить память под char **
@@ -394,10 +396,10 @@ char	**tokens_realloc(char **tokens, int tokens_count) //почитать как
 		tmp_tokens[tokens_count - 1] = NULL; //нужно делать какой-то временный массив токенов, пересохранять туда все из tokens
 		while (++i < tokens_count - 1)
 		{
-			// printf("[tokens_realloc] TEST %d\n", i);
+			printf("[tokens_realloc] TEST %d\n", i);
 			tmp_tokens[i] = ft_strdup(tokens[i]);
 			free(tokens[i]); //освободить память каждого эл-та массива
-			// printf("[tokens_realloc] %d: %s\n", i, tmp_tokens[i]);
+			printf("[tokens_realloc] %d: %s\n", i, tmp_tokens[i]);
 			// token_len = ft_strlen(tokens[i]); printf("[tokens_realloc] %d token_len: %d\n", i, token_len);
 			// tmp_tokens[i] = (char *)malloc(sizeof(char) * token_len + 1);
 			// tmp_tokens[i][token_len] = '\0';
@@ -449,11 +451,11 @@ void	single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_e
 	int	k;
 
 	k = ft_strlen(tokens[token_n]) - 1;
-	// printf("\n[single_quote_token_saver] k=%d\n", k);
+	printf("\n[single_quote_token_saver] k=%d\n", k);
 	while (line[++i] != '\'')
 	{
 		tokens[token_n][++k] = line[i];
-		// printf("%c", tokens[token_n][k]);
+		printf("%c", tokens[token_n][k]);
 	}
 	tokens[token_n][++k] = '\0';
 	if (line[i + 1] == '\'')
@@ -468,7 +470,7 @@ void	single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_e
 	}
 	if (line[i + 1] == '|')
 	{
-		// printf("\n[single_quote_token_saver] PIPE\n");
+		printf("\n[single_quote_token_saver] PIPE\n");
 		return ;
 	}
 	if (line[i + 1] != ' ' && line[i + 1] != '\0') //добавить другие пробелы
@@ -476,7 +478,7 @@ void	single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_e
 		regular_char_token_saver(tokens, token_n, line, i + 1, envs);
 		return ;
 	}
-	// printf("\n[single_quote_token_saver] END\n");
+	printf("\n[single_quote_token_saver] END\n");
 }
 
 void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs)
@@ -489,7 +491,7 @@ void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_
 	// *k2 = ft_strlen(tokens[token_n]) - 1;
 	k2 = &k;
 	i_ptr = &i;
-	// printf("\n[double_quotes_token_saver] k=%d, k2=%d\n", k, *k2);
+	printf("\n[double_quotes_token_saver] k=%d, k2=%d\n", k, *k2);
 	while (line[++i] != '\"')
 	{
 		if (line[i] == '$' && line[i + 1] != ' ' && line[i + 1] != '\"')
@@ -503,7 +505,7 @@ void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_
 		else
 		{
 			tokens[token_n][++k] = line[i];
-			// printf("%c", tokens[token_n][k]);
+			printf("%c", tokens[token_n][k]);
 		}
 	}
 	// k = ft_strlen(tokens[token_n]) - 1; //10.09 echo "''' $USER   ''"
@@ -520,7 +522,7 @@ void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_
 	}
 	if (line[i + 1] == '|')
 	{
-		// printf("\n[double_quotes_token_saver] PIPE\n");
+		printf("\n[double_quotes_token_saver] PIPE\n");
 		return ;
 	}
 	if (line[i + 1] != ' ' && line[i + 1] != '\0') //добавить другие пробелы
@@ -528,7 +530,7 @@ void	double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_
 		regular_char_token_saver(tokens, token_n, line, i + 1, envs);
 		return ;
 	}
-	// printf("\n[double_quotes_token_saver] END\n");
+	printf("\n[double_quotes_token_saver] END\n");
 }
 
 void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs)
@@ -540,7 +542,7 @@ void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_e
 	while (1)
 	{
 		k = ft_strlen(tokens[token_n]) - 1;
-		// printf("\n[regular_char_token_saver] k=%d\n", k);
+		printf("\n[regular_char_token_saver] k=%d\n", k);
 		if (line[i] == '\'')
 		{
 			single_quote_token_saver(tokens, token_n, line, i, envs);
@@ -563,13 +565,13 @@ void	regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_e
 		if (line[i] == '\0')
 			break ;
 		tokens[token_n][++k] = line[i];
-		// printf("k=%d: %c", k, tokens[token_n][k]);
+		printf("k=%d: %c", k, tokens[token_n][k]);
 		if (line[i] == '|' || line[i + 1] == '|' || line[i] == '>' || line[i + 1] == '>' || line[i] == '<' || line[i + 1] == '<')
 			break;
 		i++;
 	}
 	tokens[token_n][++k] = '\0';
-	// printf("\n[regular_char_token_saver END]\n");
+	printf("\n[regular_char_token_saver END]\n");
 }
 
 int	regular_char_lexer(char *line, int i, t_env **envs)
@@ -597,7 +599,7 @@ int	regular_char_lexer(char *line, int i, t_env **envs)
 			i++;
 			continue; //04.08 fix $TERM$HOME - должен быть 1 аргумент
 		}
-		// printf("%c", line[i]);
+		printf("%c", line[i]);
 		if (line[i] == ' ') //добавить другие пробелы
 			break ;
 		if (line[i] == '\0')
@@ -614,10 +616,12 @@ int	double_quotes_lexer(char *line, int i, t_env **envs)
 	// printf("in double\n");
 	while (line[++i] != '\"')
 	{
+		// printf("double[%d]: %c\n", i, line[i]);
+		// printf("%c", line[i]); //05.08
 		if (line[i] == '$' && line[i + 1] != ' ' && line[i + 1] != '\"') //11.08 fix "$", "$ aaa"
 			i = get_env_var_value(line, i + 1, envs); // i = get_env_var_value(line, i + 1, 0, envs); //05.08
-		else {}
-			// printf("%c", line[i]);
+		else
+			printf("%c", line[i]); //05.08
 		if (line[i] == '\0')
 		{
 			printf("Not closed quote \"\n");
@@ -649,7 +653,8 @@ int	single_quote_lexer(char *line, int i, t_env **envs)
 {
 	while (line[++i] != '\'')
 	{
-		// printf("%c", line[i]);
+		// printf("single: %c\n", line[i]);
+		printf("%c", line[i]);
 		if (line[i] == '\0')
 		{
 			printf("Not closed quote \'\n");
@@ -688,7 +693,7 @@ int	get_env_var_value_to_saver(char **tokens, int token_n, char *line, int i, t_
 	int		k;
 
 	k = ft_strlen(tokens[token_n]) - 1;
-	// printf("\n[get_env_var_value_to_saver] k=%d\n", k);
+	printf("\n[get_env_var_value_to_saver] k=%d\n", k);
 	var_len = 0;
 	tmp_i = i;
 	while (line[i] != ' ')
@@ -709,11 +714,12 @@ int	get_env_var_value_to_saver(char **tokens, int token_n, char *line, int i, t_
 		while (*var_value)
 		{
 			tokens[token_n][++k] = *var_value;
+			printf("%c", tokens[token_n][k]);
 			var_value++;
 		}
 	}
 	free(var_name);
-	// printf("\n[get_env_var_value_to_saver] END\n");
+	printf("\n[get_env_var_value_to_saver] END\n");
 	return (i - 1);
 }
 
@@ -739,7 +745,7 @@ int	get_env_var_value(char *line, int i, t_env **envs)
 	get_env_name_from_line(&var_name, line, tmp_i);
 	// printf("\nvar_len %d\n", var_len); printf("var_name: %s\n", var_name); printf("var_value: "); //print_env_list(envs); 
 	var_value = get_env_value_by_name(var_name, envs);
-	// printf("%s", var_value);
+	printf("%s", var_value);
 	free(var_name);
 	return (i - 1);
 }
