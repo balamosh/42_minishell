@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/14 09:52:42 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/15 21:50:29 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 t_ast_node	*ast_create_node(t_ast_type type, void *data)
 {

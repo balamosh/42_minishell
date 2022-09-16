@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   test_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 22:34:56 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 22:34:57 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/09/15 21:50:58 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	test_ast()
 {

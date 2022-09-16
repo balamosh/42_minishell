@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:53:53 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/01 23:00:28 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/15 21:50:53 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 # define SH_FG_RED "\033[31m"
 # define SH_FG_GREEN "\033[32m"

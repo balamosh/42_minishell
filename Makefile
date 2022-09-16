@@ -10,12 +10,19 @@ SRCS_FILES	= main.c							\
 			  libft/ft_strlen.c 				\
 			  libft/ft_strcmp.c					\
 			  libft/ft_strdup.c					\
+			  parser.c							\
 			  lexer.c							\
-			  envs.c							\
-			  env_lst_utils.c					\
+			  token_saver.c						\
+			  array_realloc.c 					\
+			  envs_lst_saver.c					\
+			  envs_lst_utils.c					\
+			  get_env.c 						\
+			  tokens_to_ast_nodes.c 			\
 			  ast_exec.c						\
 			  ast.c								\
 			  prompt.c							\
+			  utils.c							\
+			  free_utils.c 						\
 			  test_ast.c						\
 			  tests.c
 
@@ -26,6 +33,7 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
+CFLAGS		= -MMD
 # CFLAGS		= -Wall -Werror -Wextra -MMD
 LIBS		= -lreadline
 

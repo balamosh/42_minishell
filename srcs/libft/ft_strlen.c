@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 19:27:30 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/07 18:41:59 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/15 21:51:43 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 size_t	ft_strlen(const char *s)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_lst_utils.c                                    :+:      :+:    :+:   */
+/*   envs_lst_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 08:58:55 by heboni            #+#    #+#             */
-/*   Updated: 2022/08/14 15:37:34 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/16 09:22:25 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	env_lst_push_bottom(t_env **head, char *name, char *value)
 {

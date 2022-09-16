@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/01 23:00:49 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/16 09:27:58 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 #include <stdio.h>
 
@@ -118,8 +118,7 @@ void	ast_exec_node(t_btree *node)
 	t_ast_node	*ast_node;
 	static void	(*exec[MSH_AST_TYPE_CNT])(t_btree *) = \
 	{ast_exec_pipe, ast_exec_cmd, \
-	ast_exec_rr, ast_exec_rrr, ast_exec_rl, ast_exec_rll, \
-	ast_exec_file};
+	ast_exec_rr, ast_exec_rrr, ast_exec_rl, ast_exec_rll};
 
 	ast_node = (t_ast_node *) node->item;
 	exec[ast_node->type]((void *) node);

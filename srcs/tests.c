@@ -6,11 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:54:57 by sotherys          #+#    #+#             */
-/*   Updated: 2022/08/01 23:00:45 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/15 21:51:02 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*
 	./push_swap 8 5 4 7 | ./checher 8 5 4 7
