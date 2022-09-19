@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:32:22 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/16 09:06:27 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 07:38:23 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_ast_node *tokens_to_ast_nodes(char **tokens, int tokens_count, int *exeption_i
 	int			token_i;
 	t_ast_node	*ast_nodes;
 
-	token_i = -1;
+	token_i = -1; //TO DO норм, что я не выделяю динамически память, при этом дальше в ф-ии передаю адрес лок. переменной этой ф-ии
 	ast_nodes = NULL;
 	while (++token_i < tokens_count)
 	{
@@ -34,11 +34,7 @@ t_ast_node *tokens_to_ast_nodes(char **tokens, int tokens_count, int *exeption_i
 		else if (ft_strcmp(tokens[token_i], "<<") == 0 && is_real_token(exeption_indexes, exeption_indexes_n, token_i))
 			ast_node_lst_push_bottom(&ast_nodes, MSH_REDIRECT_LL);
 		else
-		{
-			printf("no seg %s\n", tokens[token_i]);
 			ast_cmd_node_lst_push_bottom(&ast_nodes, tokens, &token_i, MSH_CMD); //в аргументы нужно сложить все токены до 1-го | <
-			printf("token_i = %d\n", token_i);
-		}
 		printf("tokens[%d]: %s\n", token_i, tokens[token_i]);
 	}
 	printf(" [tokens_to_ast_nodes] END\n");

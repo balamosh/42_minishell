@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/15 21:50:29 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 07:43:02 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,20 @@ char	**get_cmd_node_argv(char **tokens, int *token_i)
 	argv = NULL; //?
 	tmp_i = *token_i;
 	tokens_count = get_tokens_count(tokens);
-	while (++(*token_i) < tokens_count)
+	// printf("[get_cmd_node_argv] *token_i = %d, tokens_count = %d\n", *token_i, tokens_count);
+	while (++(*token_i) < tokens_count) //с токена-команды переходим на токен-0-аргумент
 	{
 		if (is_special_token(tokens, *token_i)) //токен является специальным, если он один из (|<><<>>) И token_n нет в exeption_indexes
 			break;
 		argv_count++;
 	}
 	(*token_i)--;
-	printf("[get_cmd_node_argv] *token_i to return = %d\n", *token_i);
-	printf("[get_cmd_node_argv] argv_count = %d\n", argv_count);
+	// printf("[get_cmd_node_argv] *token_i to return = %d\n", *token_i);
+	// printf("[get_cmd_node_argv] argv_count = %d\n", argv_count);
 	
-	argv = (char **)malloc(sizeof(char *) * argv_count);
+	argv = (char **)malloc(sizeof(char *) * (argv_count + 1));
 	if (!argv)
 		exit (STACK_OVERFLOW);
-	// argv[argv_count] = NULL;
 	
 	int i = -1;
 	while (++i < argv_count)
@@ -126,10 +126,7 @@ char	**get_cmd_node_argv(char **tokens, int *token_i)
 		argv[i] = strdup(tokens[++tmp_i]);
 		printf("[get_cmd_node_argv] argv[%d]=%s\n", i, argv[i]);
 	}
-	printf("[get_cmd_node_argv] NULL_i=%d\n", i);
-	argv[i] = NULL; //без этого sega, с этим затирается argv[0] ((
-	// argv[i+1] = NULL;	
-	print_string_array(argv, 0);
+	argv[i] = NULL;
 	printf("[get_cmd_node_argv] END\n");
 	return (argv);
 }
@@ -234,5 +231,5 @@ void	print_nodes_list(t_ast_node *ast_nodes)
 		}
 		ast_nodes = ast_nodes->next;
 	}
-	printf("[print_nodes_list END]\n");
+	printf("[print_nodes_list END]\n\n");
 }

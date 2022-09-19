@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 08:58:55 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/16 09:22:25 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/18 23:01:42 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_env_lst(t_env **lst)
 	}
 }
 
-void	print_env_list(t_env **lst)
+void	print_env_list0(t_env **lst)
 {
 	t_env	*tmp;
 
@@ -72,6 +72,21 @@ void	print_env_list(t_env **lst)
 		printf("%s, ", (char *)tmp->var_name);
 		printf("%s \n", (char *)tmp->var_value);
 		tmp = tmp->next;
+	}
+	printf("\n");
+}
+
+void	print_env_list(t_env *env)
+{
+	printf("\n---------------print_envs--------------\n");
+	if (!env)
+		return ;
+	while (env)
+	{
+		printf("%s, ", (char *)env->var_name);
+		printf("%s \n", (char *)env->var_value);
+		// env->var_value = "hacked :)";
+		env = env->next;
 	}
 	printf("\n");
 }

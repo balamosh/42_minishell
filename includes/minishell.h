@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/16 09:26:09 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 07:35:06 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,22 @@
 # define STACK_OVERFLOW -1
 # define INPUT_ERROR	-2
 
-struct s_msh	*msh_ctx;
-int	cur_env_vars_len; //если $USER$TERM, то токен 1, token_len = len_env1_val + len_env2_val
+// struct s_msh	*msh_ctx;
 
 typedef struct s_msh
 {
 	t_btree	*ast;
-	t_env	*envs_lst;
+	t_env	*env;
 	int		not_closed_quote;
-	int		cur_env_vars_len;
-	//TO DO перенести сюда cur_env_vars_len
+	int		cur_env_vars_len; //если $USER$TERM, то токен 1, token_len = len_env1_val + len_env2_val
 }				t_msh;
 
 
 char		*get_prompt(void);
 
 // parser
-t_ast_node 	*parser(char *line, t_env **envs);
-char		**get_tokens(char *line, t_env **envs, int **special_indexes, int *special_indexes_n);
+t_ast_node	*parser(char *line, t_msh *msh_ctx);
+char		**get_tokens(char *line, t_msh *msh_ctx, int **special_indexes, int *special_indexes_n);
 int			is_exeption_token(char *line, int tmp_i, char c);
 
 // array_realloc
@@ -54,15 +52,15 @@ char		**tokens_realloc(char **tokens, int tokens_count);
 int			**int_array_realloc(int **array, int *array_n);
 
 // lexer
-int			single_quote_lexer(char *line, int i, t_env **envs);
-int			double_quotes_lexer(char *line, int i, t_env **envs);
-int			regular_char_lexer(char *line, int i, t_env **envs);
+int			single_quote_lexer(char *line, int i, t_msh *msh_ctx);
+int			double_quotes_lexer(char *line, int i, t_msh *msh_ctx);
+int			regular_char_lexer(char *line, int i, t_msh *msh_ctx);
 int			special_chars_lexer(char *line, int i);
 
 // token_saver
-void		single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
-void		double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
-void		regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_env **envs);
+void		single_quote_token_saver(char **tokens, int token_n, char *line, int i, t_msh *msh_ctx);
+void		double_quotes_token_saver(char **tokens, int token_n, char *line, int i, t_msh *msh_ctx);
+void		regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_msh *msh_ctx);
 void		special_chars_token_saver(char **tokens, int token_n, char *line, int i);
 
 // tokens_to_ast_nodes
@@ -87,5 +85,11 @@ void		free_string_array(char **argv);
 int 		get_tokens_count(char **tokens);
 void		print_string_array(char **argv, int count);
 void		print_int_array(int *array, int n);
+
+
+// get_env
+int		get_env_var_value_to_saver(char **tokens, int token_n, char *line, int i, t_env **envs, t_msh *msh_ctx);
+int		get_env_var_value_to_lexer(char *line, int i, t_env **envs, t_msh *msh_ctx);
+char	*get_env_value_by_name_from_envs(void *name, t_env **envs, t_msh *msh_ctx);
 
 #endif

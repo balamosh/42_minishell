@@ -63,13 +63,12 @@ char	**tokens_realloc(char **tokens, int tokens_count)
 		tmp_tokens = (char **)malloc(sizeof(char *) * tokens_count); //выделить память под char **
 		if (tmp_tokens == NULL)
 			exit(STACK_OVERFLOW);
-		tmp_tokens[tokens_count - 1] = NULL; //нужно делать какой-то временный массив токенов, пересохранять туда все из tokens
+		tmp_tokens[tokens_count - 1] = NULL; //почему tokens_count - 1
 		while (++i < tokens_count - 1)
 		{
-			printf("[tokens_realloc] TEST %d\n", i);
 			tmp_tokens[i] = ft_strdup(tokens[i]);
 			free(tokens[i]); //освободить память каждого эл-та массива
-			printf("[tokens_realloc] %d: %s\n", i, tmp_tokens[i]);
+			printf("[tokens_realloc] tmp_tokens[%d]: %s\n", i, tmp_tokens[i]);
 			// token_len = ft_strlen(tokens[i]); printf("[tokens_realloc] %d token_len: %d\n", i, token_len);
 			// tmp_tokens[i] = (char *)malloc(sizeof(char) * token_len + 1);
 			// tmp_tokens[i][token_len] = '\0';
