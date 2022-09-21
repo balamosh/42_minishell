@@ -6,13 +6,13 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/07/07 16:18:52 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:38:13 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast_node	*ast_create_node(t_ast_type type, void *data)
+t_ast_node	*ast_create_node(t_tok_type type, void *data)
 {
 	t_ast_node	*node;
 
