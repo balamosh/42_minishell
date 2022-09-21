@@ -6,12 +6,11 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 07:45:13 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/16 07:46:45 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 22:17:19 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	**int_array_realloc(int **array, int *array_n)
 {

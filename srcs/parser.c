@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:19:51 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/21 07:34:46 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 22:20:14 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ t_ast_node *parser(char *line, t_msh *msh_ctx)
 		printf("TOKENS == NULL\n");
 		return (NULL);
 	}
-	tokens_count = get_tokens_count(tokens);
-	printf("[parser] char **tokens: ");
-	// printf("tokens_count: %d\n", tokens_count);
-	print_string_array(tokens, 0);
-	print_int_array(exeption_indexes, exeption_indexes_n);
+	tokens_count = get_tokens_count(tokens); // printf("tokens_count: %d\n", tokens_count);
+	printf("[parser] char **tokens: "); print_string_array(tokens, 0);
+	
+	msh_ctx->exeption_indexes_n = exeption_indexes_n;
+	msh_ctx->exeption_indexes = exeption_indexes;
+	print_int_array(msh_ctx->exeption_indexes, msh_ctx->exeption_indexes_n);
 	// ast_nodes = NULL;
-	ast_nodes = tokens_to_ast_nodes(tokens, tokens_count, exeption_indexes, exeption_indexes_n);
+	ast_nodes = tokens_to_ast_nodes(tokens, tokens_count, msh_ctx);
 	if (ast_nodes == NULL)
 		printf("[parser NO_NODES_LIST]\n");
-	// print_nodes_list(ast_nodes);
 	if (exeption_indexes)
 		free(exeption_indexes);
 	free_string_array(tokens);
@@ -54,10 +54,8 @@ char	**get_tokens(char *line, t_msh *msh_ctx, int **exeption_indexes, int *exept
 	i = -1;
 	tokens_count = 0;
 	*exeption_indexes_n = 0;
-	printf("[get_tokens] line: %s\n", line);
-	len = ft_strlen(line); 
-	printf("[get_tokens]: len = %d\n", len);
-	line[len] = '\0';
+	len = ft_strlen(line);
+	printf("[get_tokens]: line: %s, len = %d\n", line, len);
 	tokens = NULL;
 	while (++i < len)
 	{

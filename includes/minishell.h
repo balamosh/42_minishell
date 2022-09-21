@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/21 07:35:06 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 22:21:35 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_msh
 {
 	t_btree	*ast;
 	t_env	*env;
+	int		*exeption_indexes;
+	int		exeption_indexes_n;
 	int		not_closed_quote;
 	int		cur_env_vars_len; //если $USER$TERM, то токен 1, token_len = len_env1_val + len_env2_val
 }				t_msh;
@@ -64,18 +66,17 @@ void		regular_char_token_saver(char **tokens, int token_n, char *line, int i, t_
 void		special_chars_token_saver(char **tokens, int token_n, char *line, int i);
 
 // tokens_to_ast_nodes
-t_ast_node	*tokens_to_ast_nodes(char **tokens, int tokens_count, int *exeption_indexes, int exeption_indexes_n);
+t_ast_node 	*tokens_to_ast_nodes(char **tokens, int tokens_count, t_msh *msh_ctx);
 int			is_real_token(int *special_indexes, int special_indexes_n, int token_i);
 
 // ast.c
 void		print_nodes_list(t_ast_node *ast_nodes);
-int			is_special_token(char **tokens, int token_i);
+int			is_special_token(char **tokens, int token_i, int *exeption_indexes, int exeption_indexes_n);
 int			is_special_symbols(char *token);
 void		ast_node_lst_push_bottom(t_ast_node **head, t_ast_type type);
-void		ast_cmd_node_lst_push_bottom0(t_ast_node **head, char **tokens, int i, t_ast_type type);
-void		ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int *i, t_ast_type type);
+void		ast_cmd_node_lst_push_bottom(t_ast_node **head, char **tokens, int *i, t_ast_type type, t_msh *msh_ctx);
 t_ast_node	*get_last_ast_node(t_ast_node *head);
-char		**get_cmd_node_argv(char **tokens, int *token_i);
+char		**get_cmd_node_argv(char **tokens, int *token_i, t_msh *msh_ctx);
 
 // free_utils.c
 void		free_nodes_lst(t_ast_node **ast_nodes);

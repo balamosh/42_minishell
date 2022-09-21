@@ -25,6 +25,7 @@ char	*get_env_value_to_save(char *env, int i, int k);
 
 // get_env
 void	get_env_name_from_line(char **var_name, char *line, int tmp_i);
+void	put_env_value_to_token(char *var_value, char **tokens, int token_n);
 
 // envs_lst_utils
 void	env_lst_push_bottom(t_env **head, char *name, char *value);

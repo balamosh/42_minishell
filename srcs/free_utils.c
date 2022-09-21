@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:44:50 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/19 20:25:59 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/21 21:30:46 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_nodes_lst(t_ast_node **ast_nodes)
 	while (*ast_nodes)
 	{
 		next = (*ast_nodes)->next;
-		if ((*ast_nodes)->data)
+		if ((*ast_nodes)->data) //TO DO с такими комментариями была ошибка освобождения чужой памяти с вводом  a | | <
 		{
 		// 	if ((*ast_nodes)->type == MSH_CMD)
 		// 	{
