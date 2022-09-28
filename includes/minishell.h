@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:24:04 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/21 22:21:35 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/29 21:58:31 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char		**get_cmd_node_argv(char **tokens, int *token_i, t_msh *msh_ctx);
 void		free_nodes_lst(t_ast_node **ast_nodes);
 void		free_string_array(char **argv);
 
-//utils
+// utils
 int 		get_tokens_count(char **tokens);
 void		print_string_array(char **argv, int count);
 void		print_int_array(int *array, int n);
@@ -91,6 +91,14 @@ void		print_int_array(int *array, int n);
 // get_env
 int		get_env_var_value_to_saver(char **tokens, int token_n, char *line, int i, t_env **envs, t_msh *msh_ctx);
 int		get_env_var_value_to_lexer(char *line, int i, t_env **envs, t_msh *msh_ctx);
-char	*get_env_value_by_name_from_envs(void *name, t_env **envs, t_msh *msh_ctx);
+char	*get_env_value_by_name_from_envs(void *name, t_env *envs, t_msh *msh_ctx);
+// char	*get_env_value_by_name_from_envs(void *name, t_env **envs, t_msh *msh_ctx);
+
+// buildins
+int		env_builtin(t_env *envs, char **argv, int fd);
+int		export_builtin(t_env *envs, char **argv, int fd);
+char	*get_env_name_to_buildin(char *argv, int *i, int *k);
+int		unset(t_env **envs, char **argv, int fd);
+int		is_not_valid(char *argv);
 
 #endif

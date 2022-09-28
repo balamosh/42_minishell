@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 20:54:51 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/21 22:23:58 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/26 21:42:29 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	**get_cmd_node_argv(char **tokens, int *token_i, t_msh *msh_ctx)
 	int		tmp_i;
 
 	argv_count = 0;
-	argv = NULL; //?
+	argv = NULL; //тогда передадим cmd->argv NULL в env
 	tmp_i = *token_i;
 	tokens_count = get_tokens_count(tokens);
 	// printf("[get_cmd_node_argv] *token_i = %d, tokens_count = %d\n", *token_i, tokens_count);
@@ -103,7 +103,8 @@ char	**get_cmd_node_argv(char **tokens, int *token_i, t_msh *msh_ctx)
 	(*token_i)--;
 	// printf("[get_cmd_node_argv] *token_i to return = %d\n", *token_i);
 	// printf("[get_cmd_node_argv] argv_count = %d\n", argv_count);
-	
+	if (argv_count == 0)
+		return (argv);
 	argv = (char **)malloc(sizeof(char *) * (argv_count + 1));
 	if (!argv)
 		exit (STACK_OVERFLOW);

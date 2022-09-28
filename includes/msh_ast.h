@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 14:35:27 by sotherys          #+#    #+#             */
-/*   Updated: 2022/09/10 16:59:03 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/24 09:59:28 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum s_ast_type
 	MSH_AST_TYPE_END
 }				t_ast_type;
 
-# define MSH_AST_TYPE_CNT MSH_AST_TYPE_END //?
+# define MSH_AST_TYPE_CNT MSH_AST_TYPE_END
 
 typedef struct s_ast_node
 {

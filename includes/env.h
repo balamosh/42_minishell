@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 14:35:30 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/20 19:59:25 by heboni           ###   ########.fr       */
+/*   Updated: 2022/09/29 22:06:15 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,7 @@ void	env_lst_push_bottom(t_env **head, char *name, char *value);
 t_env	*get_last_node(t_env *head);
 void	free_env_lst(t_env **lst);
 void	print_env_list0(t_env **lst);
-void	print_env_list(t_env *lst);
+void	print_env_list(t_env *envs);
+int		get_env_n_if_exists(t_env *envs, char *name);
+int		env_lst_update_node(t_env *envs, char *name, char *value);
+void	env_lst_remove_n_node(t_env **envs, int n);

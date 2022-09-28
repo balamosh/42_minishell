@@ -6,7 +6,7 @@
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:17:05 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/15 22:34:36 by heboni           ###   ########.fr       */
+/*   Updated: 2022/10/01 09:49:16 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	print_string_array(char **argv, int count)
 {
 	int i = -1;
 	
+	if (!argv)
+		return ;
 	printf("print_string_array\n");
 	if (count == 0)
 	{

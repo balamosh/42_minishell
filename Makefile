@@ -10,6 +10,9 @@ SRCS_FILES	= main.c							\
 			  libft/ft_strlen.c 				\
 			  libft/ft_strcmp.c					\
 			  libft/ft_strdup.c					\
+			  libft/ft_putstr_fd.c				\
+			  libft/ft_isalpha.c				\
+			  libft/ft_isdigit.c 				\
 			  parser.c							\
 			  lexer.c							\
 			  token_saver.c						\
@@ -21,6 +24,9 @@ SRCS_FILES	= main.c							\
 			  ast_exec.c						\
 			  ast.c								\
 			  prompt.c							\
+			  env.c 							\
+			  export.c 							\
+			  unset.c 							\
 			  utils.c							\
 			  free_utils.c 						\
 			  test_ast.c						\

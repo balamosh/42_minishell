@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: heboni <heboni@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/24 18:46:03 by heboni            #+#    #+#             */
-/*   Updated: 2022/09/26 21:52:59 by heboni           ###   ########.fr       */
+/*   Created: 2021/10/24 18:44:34 by heboni            #+#    #+#             */
+/*   Updated: 2022/09/24 12:55:08 by heboni           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strdup(const char *s1)
+void	ft_putstr_fd(char *s, int fd)
 {
-	char	*dup;
-	int		len;
-	int		i;
+	int	len;
 
-	i = -1;
-	len = ft_strlen(s1);
-	dup = (char *)malloc(sizeof(char) * len + 1);
-	if (dup == ((void *)0))
-		return (((void *)0));
-	while (++i < len)
-		dup[i] = s1[i];
-	dup[len] = '\0';
-	return (dup);
+	if (fd < 0 || !s)
+		return ;
+	len = ft_strlen(s);
+	write(fd, s, len);
 }
